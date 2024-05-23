@@ -4,18 +4,23 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.Cassimirous.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_order-item")
+@Table(name = "tb_order_item")
 public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private OrderItemPK id;
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private OrderItemPK id = new OrderItemPK();
+	
 	private Integer quantity;
 	private Double price;
 	
@@ -30,6 +35,7 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
